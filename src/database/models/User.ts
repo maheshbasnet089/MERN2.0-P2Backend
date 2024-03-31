@@ -3,7 +3,6 @@ import {
     Column,
     Model,
     DataType,
-   
 } from 'sequelize-typescript'
 
 @Table({

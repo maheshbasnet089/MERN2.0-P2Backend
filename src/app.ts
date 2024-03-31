@@ -7,17 +7,13 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 import './database/connection'
 
-app.get("/",(req:Request,res:Response)=>{
-    res.send("Hello world")
-    
-})
-app.get("/about",(req:Request,res:Response)=>{
-    res.send("About Page")
-})
-app.get("/contact",(req:Request,res:Response)=>{
-    res.send("contact Page")
-})
+import userRoute from './routes/userRoute'
+app.use(express.json())
 
+
+// localhost:3000/register
+//localhost:3000/hello/register
+app.use("",userRoute)
 
 app.listen(PORT,()=>{
     console.log("Server has started at port ", PORT)
