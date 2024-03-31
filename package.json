@@ -5,16 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "npx nodemon",
-    "build" : "rimraf ./build && tsc"
+    "build": "rimraf ./build && tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.1",
     "mysql2": "^3.9.2",
     "nodemon": "^3.1.0",
+    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.1",
+    "sequelize-typescript": "^2.1.6",
     "tsc-node": "^0.0.3"
   },
   "devDependencies": {
