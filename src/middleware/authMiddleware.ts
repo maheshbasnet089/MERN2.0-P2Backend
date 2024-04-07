@@ -13,7 +13,7 @@ interface AuthRequest extends Request{
     }
 }
 
-enum Role{
+export enum Role{
     Admin = 'admin',
     Customer = 'customer'
 }
@@ -58,6 +58,7 @@ class AuthMiddleware{
     restrictTo(...roles:Role[]){
         return (req:AuthRequest,res:Response,next:NextFunction)=>{
             let userRole = req.user?.role as Role
+            console.log(userRole)
             if(!roles.includes(userRole)){
                 res.status(403).json({
                     message : "you don't have permission"
