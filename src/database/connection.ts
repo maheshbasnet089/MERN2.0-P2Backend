@@ -30,8 +30,8 @@ sequelize.sync({force : false}).then(()=>{
 User.hasMany(Product,{foreignKey : 'userId'})
 Product.belongsTo(User,{foreignKey : 'userId'})
 
-Product.belongsTo(Category,{foreignKey:'categoryId'})
 Category.hasOne(Product,{foreignKey : 'categoryId'})
+Product.belongsTo(Category,{foreignKey:'categoryId'})
 
 
 export default sequelize
