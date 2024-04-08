@@ -10,6 +10,7 @@ import './database/connection'
 import userRoute from './routes/userRoute'
 import productRoute from './routes/productRoute'
 import adminSeeder from './adminSeeder'
+import categoryController from './controllers/categoryController'
 app.use(express.json())
 
 // admin seeder 
@@ -21,6 +22,7 @@ app.use("",userRoute)
 app.use("/admin/product",productRoute)
 
 app.listen(PORT,()=>{
+    categoryController.seedCategory()
     console.log("Server has started at port ", PORT)
 })
 

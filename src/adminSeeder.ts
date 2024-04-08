@@ -2,6 +2,7 @@ import User from "./database/models/User"
 import bcrypt from 'bcrypt'
 
 const adminSeeder = async():Promise<void> =>{
+ try {
     const [data] = await User.findAll({
         where : {
             email : "p2admin@gmail.com",
@@ -19,6 +20,9 @@ const adminSeeder = async():Promise<void> =>{
     }else{
         console.log("admin credentials already seeded")
     }
+ } catch (error:any) {
+    console.log(error.message)
+ }
 }
 
 export default adminSeeder
