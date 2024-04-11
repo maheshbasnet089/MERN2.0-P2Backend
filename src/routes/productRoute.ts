@@ -13,4 +13,7 @@ router.route("/")
 upload.single('image'), productController.addProduct)
 .get(productController.getAllProducts)
 
+router.route("/:id").get(productController.getSingleProduct)
+.delete(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin),productController.deleteProduct)
+
 export default router 
