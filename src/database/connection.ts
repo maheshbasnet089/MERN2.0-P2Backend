@@ -2,6 +2,7 @@ import {Sequelize} from 'sequelize-typescript'
 import User from './models/User'
 import Product from './models/Product'
 import Category from './models/Category'
+import Cart from './models/Cart'
 
 const sequelize = new Sequelize({
     database : process.env.DB_NAME,
@@ -21,7 +22,7 @@ sequelize.authenticate()
     console.log(err)
 })
 
-sequelize.sync({force : false}).then(()=>{
+sequelize.sync({force : true}).then(()=>{
     console.log("synced !!!")
 })
 
@@ -32,6 +33,16 @@ Product.belongsTo(User,{foreignKey : 'userId'})
 
 Category.hasOne(Product,{foreignKey : 'categoryId'})
 Product.belongsTo(Category,{foreignKey:'categoryId'})
+
+// product-cart relation 
+User.hasMany(Cart,{foreignKey:'userId'})
+Cart.belongsTo(User,{foreignKey : 'userId'})
+
+// user-cart relation 
+Product.hasMany(Cart,{foreignKey:'productId'})
+Cart.belongsTo(Product,{foreignKey:'productId'})
+
+
 
 
 export default sequelize
