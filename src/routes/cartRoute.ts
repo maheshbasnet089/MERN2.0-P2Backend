@@ -3,6 +3,8 @@ import authMiddleware from '../middleware/authMiddleware'
 import cartController from '../controllers/cartController'
 const router:Router = express.Router()
 
-router.route("/").post(authMiddleware.isAuthenticated,cartController.addToCart)
+router.route("/")
+.post(authMiddleware.isAuthenticated,cartController.addToCart)
+.get(authMiddleware.isAuthenticated,cartController.getMyCarts)
 
 export default router 
