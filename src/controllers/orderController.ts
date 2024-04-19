@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
-import { KhaltiResponse, OrderData, PaymentMethod } from "../types/orderTypes";
+import { KhaltiResponse, OrderData, PaymentMethod, TransactionStatus, TransactionVerificationResponse } from "../types/orderTypes";
 import Order from "../database/models/Order";
 import Payment from "../database/models/Payment";
 import OrderDetail from "../database/models/OrderDetails";
@@ -19,7 +19,6 @@ class OrderController{
             return
         }
 
-   
         const paymentData = await Payment.create({
             paymentMethod : paymentDetails.paymentMethod
         })
@@ -62,6 +61,37 @@ class OrderController{
         }else{
             res.status(200).json({
                 message : "Order placed successfully"
+            })
+        }
+    }
+    async verifyTransaction(req:AuthRequest,res:Response):Promise<void>{
+        const {pidx}= req.body 
+
+        if(!pidx){
+            res.status(400).json({
+                message : "Please provide pidx"
+            })
+            return
+        }
+        const response = await axios.post("https://a.khalti.com/api/v2/epayment/lookup/",{pidx},{
+            headers : {
+                'Authorization' : 'key 625cc1cff7cb408b8c84df0f7502a634'
+            }
+        })
+        const data:TransactionVerificationResponse = response.data 
+        console.log(data)
+        if(data.status === TransactionStatus.Completed ){
+          await Payment.update({paymentStatus:'paid'},{
+            where : {
+                pidx : pidx
+            }
+          })
+          res.status(200).json({
+            message : "Payment verified successfully"
+          })
+        }else{
+            res.status(200).json({
+                message : "Payment not verified"
             })
         }
     }
