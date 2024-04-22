@@ -10,4 +10,11 @@ router.route("/customer/").post(authMiddleware.isAuthenticated,errorHandler(orde
 
 router.route("/customer/:id").patch(authMiddleware.isAuthenticated, authMiddleware.restrictTo(Role.Customer), errorHandler(orderController.cancelMyOrder)).get(authMiddleware.isAuthenticated,errorHandler(orderController.fetchOrderDetails))
 
+
+router.route("/admin/payment/:id").patch(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin),errorHandler(orderController.changePaymentStatus))
+
+router.route("/admin/:id").patch(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin),errorHandler(orderController.changeOrderStatus)).delete(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin),errorHandler(orderController.deleteOrder))
+
+
+
 export default router 
