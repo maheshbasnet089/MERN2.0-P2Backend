@@ -14,6 +14,11 @@ import adminSeeder from './adminSeeder'
 import categoryController from './controllers/categoryController'
 import cartRoute from './routes/cartRoute'
 import orderRoute from './routes/orderRoute'
+import cors from 'cors'
+
+app.use(cors({
+    origin : '*'
+}))
 app.use(express.json())
 
 // admin seeder 
