@@ -6,6 +6,7 @@ import Payment from "../database/models/Payment";
 import OrderDetail from "../database/models/OrderDetails";
 import axios from "axios";
 import Product from "../database/models/Product";
+import Cart from "../database/models/Cart";
 
 class ExtendedOrder extends Order{
     declare paymentId : string | null
@@ -33,11 +34,19 @@ class OrderController{
             paymentId : paymentData.id
         })
 
+        let responseOrderData ; 
+
         for(var i = 0 ; i<items.length ; i++){
-            await OrderDetail.create({
+         responseOrderData =  await OrderDetail.create({
                 quantity : items[i].quantity,
                 productId : items[i].productId,
                 orderId : orderData.id
+            })
+           await Cart.destroy({
+                where : {
+                    productId : items[i].productId, 
+                    userId : userId
+                }
             })
         }
         if(paymentDetails.paymentMethod === PaymentMethod.Khalti){
@@ -59,7 +68,8 @@ class OrderController{
             paymentData.save()
             res.status(200).json({
                 message : "order placed successfully",
-                url : khaltiResponse.payment_url
+                url : khaltiResponse.payment_url, 
+                data : responseOrderData
             })
         }else{
             res.status(200).json({
