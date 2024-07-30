@@ -3,6 +3,7 @@ import {Request,Response} from 'express'
 import User from '../database/models/User'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { AuthRequest } from '../middleware/authMiddleware'
 
 
 class AuthController{
@@ -73,6 +74,22 @@ class AuthController{
         })
 
 
+    }
+
+    public static async fetchUsers(req:AuthRequest,res:Response):Promise<void>{
+
+        const users = await User.findAll()
+        if(users.length > 0 ){
+            res.status(200).json({
+                message : "order fetched successfully",
+                data : users
+            })
+        }else{
+            res.status(404).json({
+                message : "you haven't ordered anything yet..",
+                data : []
+            })
+        }
     }
 }
 

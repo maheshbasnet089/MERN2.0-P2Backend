@@ -7,6 +7,8 @@ import OrderDetail from "../database/models/OrderDetails";
 import axios from "axios";
 import Product from "../database/models/Product";
 import Cart from "../database/models/Cart";
+import User from "../database/models/User";
+import Category from "../database/models/Category";
 
 class ExtendedOrder extends Order{
     declare paymentId : string | null
@@ -14,6 +16,7 @@ class ExtendedOrder extends Order{
 
 class OrderController{
     async createOrder(req:AuthRequest,res:Response):Promise<void>{
+        console.log(req.body)
         const userId = req.user?.id
         const {phoneNumber,shippingAddress,totalAmount,paymentDetails,items}:OrderData = req.body 
         if(!phoneNumber || !shippingAddress || !totalAmount || !paymentDetails || !paymentDetails.paymentMethod || items.length == 0  ){
@@ -140,7 +143,25 @@ class OrderController{
                 orderId
             },
             include : [{
-                model : Product
+                model : Product,
+                include : [
+                    {
+                        model : Category,
+                        attributes : ["categoryName"]
+                    }
+                ]
+            },{
+                model : Order,
+                include : [{
+                    model : Payment,
+                    attributes : ["paymentMethod",'paymentStatus']
+                },
+                {
+                    model : User,
+                    attributes : ["username","email"]
+                }
+        ]
+                
             }]
         })
         if(orderDetails.length > 0 ){
@@ -245,6 +266,28 @@ class OrderController{
             message : "No order with that orderId"
         })
       }
+    }
+
+    async fetchOrders(req:AuthRequest,res:Response):Promise<void>{
+
+        const orders = await Order.findAll({
+            include : [
+                {
+                    model : Payment
+                }
+            ]
+        })
+        if(orders.length > 0 ){
+            res.status(200).json({
+                message : "order fetched successfully",
+                data : orders
+            })
+        }else{
+            res.status(404).json({
+                message : "you haven't ordered anything yet..",
+                data : []
+            })
+        }
     }
 }
 

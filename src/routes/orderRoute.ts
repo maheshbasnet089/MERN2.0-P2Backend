@@ -5,6 +5,7 @@ import orderController from '../controllers/orderController'
 const router:Router = express.Router()
 
 router.route('/').post(authMiddleware.isAuthenticated,errorHandler(orderController.createOrder))
+.get(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin),errorHandler(orderController.fetchOrders))
 router.route('/verify').post(authMiddleware.isAuthenticated,errorHandler(orderController.verifyTransaction))
 router.route("/customer/").get(authMiddleware.isAuthenticated,errorHandler(orderController.fetchMyOrders))
 
