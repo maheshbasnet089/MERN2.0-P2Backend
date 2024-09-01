@@ -23,7 +23,7 @@ app.use(express.json())
 
 // admin seeder 
 adminSeeder()
-
+app.use(express.static("./src/uploads/"))
 // localhost:3000/register
 //localhost:3000/hello/register
 app.use("",userRoute)

@@ -12,4 +12,6 @@ router.route("/login").post(errorHandler(AuthController.loginUser))
 router.route("/users").get(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin),errorHandler(AuthController.fetchUsers))
 
 
+
+router.route("/users/:id").delete(authMiddleware.isAuthenticated,authMiddleware.restrictTo(Role.Admin), errorHandler(AuthController.deleteUser))
 export default router 
