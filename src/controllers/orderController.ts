@@ -158,7 +158,7 @@ class OrderController{
                 },
                 {
                     model : User,
-                    attributes : ["username","email"]
+                    attributes : ["username","email","id"]
                 }
         ]
                 
@@ -215,7 +215,8 @@ class OrderController{
         })
 
         res.status(200).json({
-            message : 'Order Status updated successfully'
+            message : 'Order Status updated successfully', 
+            data : orderStatus
         })
     }
 

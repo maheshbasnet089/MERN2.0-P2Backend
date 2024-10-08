@@ -28,9 +28,11 @@ class AuthMiddleware{
         })
         return 
        }
+       console.log(token)
         // verify token if it it is legit or tampered 
        jwt.verify(token,process.env.SECRET_KEY as string,async (err,decoded:any)=>{
         if(err){
+            console.log(err)
             res.status(403).json({
                 message : "Invalid Token"
             })
